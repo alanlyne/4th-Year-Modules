@@ -42,26 +42,3 @@
                           (list '* (d v) u)) (* v v)))
                    
 		   (else (error))))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(define d2
-  (λ (e)
-    (cond ((number? e) 0)
-          ((equal? e 'x) 1)
-          (else
-           (let ((op (car e)) (u (cadr e)) (v (caddr e)))
-             (apply (lookup op d-op-table)
-                    (map (λ (ee) (d1 ee v)) u v)))))))
-
-(define d-op-table
-  (list (list '+ (λ (u1 v1) (+ (d u1) (d v1))))
-        (list '* (λ (u1 v1) (* (d u1) (d v1))))))
-        
-
-(define lookup
-  (λ (op table)
-    (if (equal? op (caar table))
-	(cadar table)
-	(lookup op (cdr table)))))
-
