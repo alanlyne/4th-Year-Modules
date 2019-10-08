@@ -92,9 +92,12 @@
     
 
 (define d-op-table
-  (list(list '+ (λ (u v) (+ (d u) (d v))))
+  (list(list '+ (λ (u v) list '+ (d u) (d v)))
        (list '* (λ (u v)
-          (list '+ (list ' * u (d v)) (list ' * v (d u)))))))
+          (list '+ (list ' * u (d v)) (list ' * v (d u))))))) 
+                  
+;;; ((du * v) - (dv * u) / (v^2)
+                          
 
 (define lookup
   (λ (op table)
