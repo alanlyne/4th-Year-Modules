@@ -86,17 +86,17 @@
     (cond ((number? e) 0)
 	  ((equal? e 'x) 1)
 	  (else
-	   ;; We handle only BINARY ops here, and only + and *
 	   (let ((op (car e)) (args (cdr e)))
 	     (apply (lookup op d-op-table) args))))))
     
 
 (define d-op-table
-  (list(list '+ (λ (u v) list '+ (d u) (d v)))
+  (list(list '+ (λ (u v) (list '+ (d u) (d v))))
+       (list '- (λ (u v) (list '- (d u) (d v))))
        (list '* (λ (u v)
-          (list '+ (list ' * u (d v)) (list ' * v (d u))))))) 
-                  
-;;; ((du * v) - (dv * u) / (v^2)
+          (list '+ (list ' * u (d v)) (list ' * v (d u)))))
+       (list '/ (λ (u v)
+          (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v))))))
                           
 
 (define lookup
