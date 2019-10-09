@@ -1,6 +1,7 @@
 #lang racket
-(require (planet dyoo/simply-scheme:2:2))
 
+;;;    - Unary: sin, cos, exp, recip (1/x), log (natural log)
+;;;    - Binary: +, *, / (x/y), expt (x^y)
 
 (define d
   (λ (e)
@@ -12,13 +13,23 @@
     
 
 (define d-op-table
-  (list(list '+ (λ (u v) (list '+ (d u) (d v))))
-       (list '- (λ (u v) (list '- (d u) (d v))))
+  (list(list '+ (λ (u v) (list '+ (d u) (d v)))) ;Working
+       
+       (list '- (λ (u v) (list '- (d u) (d v)))) ;Working
+       
        (list '* (λ (u v)
-          (list '+ (list ' * u (d v)) (list ' * v (d u)))))
+          (list '+ (list ' * u (d v)) (list ' * v (d u))))) ;Working
+       
        (list '/ (λ (u v)
-          (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v))))))
-                          
+          (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v)))) ;Working
+
+       (list 'expt (λ (u v) (list 'expt (list '* v  u) (- v 1)))) ;Working
+       
+       (list 'sin (λ (u v) (list '* (d u) 'cos (list u)))) ;Working
+       
+       (list 'cos (λ (u v) (list '* list (d u) '* -1 'sin (list u)))) ;Working
+
+))
 
 (define lookup
   (λ (op table)
