@@ -23,7 +23,7 @@
        (list '/ (λ (u v)
           (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v)))) ;Working
 
-       (list 'expt (λ (u v) (list 'expt (list '* v  u) (- v 1)))) ;Working
+       (list 'expt (λ (u v) (list 'expt (list '* v  u) (- v 1)))) ;Not Working
 
 
        (list 'recip (λ (v u)
