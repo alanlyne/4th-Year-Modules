@@ -1,5 +1,46 @@
 #lang racket
-(require (planet dyoo/simply-scheme:2:2))
+
+;;;    - Unary: sin, cos, exp, recip (1/x), log (natural log)
+;;;    - Binary: +, *, / (x/y), expt (x^y)
+
+(define d
+  (λ (e)
+    (cond ((number? e) 0)
+	  ((equal? e 'x) 1)
+	  (else
+	   (let ((op (car e)) (args (cdr e)))
+	     (apply (lookup op d-op-table) args))))))
+    
+
+(define d-op-table
+  (list(list '+ (λ (u v) (list '+ (d u) (d v)))) ;Working
+       
+       (list '- (λ (u v) (list '- (d u) (d v)))) ;Working
+       
+       (list '* (λ (u v)
+          (list '+ (list ' * u (d v)) (list ' * v (d u))))) ;Working
+       
+       (list '/ (λ (u v)
+          (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v)))) ;Working
+
+       (list 'expt (λ (u v) (list 'expt (list '* v  u) (- v 1)))) ;Not Working
+
+
+       (list 'recip (λ (v u)
+          (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v))))
+       
+       (list 'sin (λ (u v) (list '* (d u) 'cos (list u)))) ;Working
+       
+       (list 'cos (λ (u v) (list '* list (d u) '* -1 'sin (list u)))) ;Working
+
+))
+
+(define lookup
+  (λ (op table)
+    (if (equal? op (caar table))
+	(cadar table)
+	(lookup op (cdr table)))))
+
 
 #|
 (define d  ;;; calling the function, "d"
@@ -16,9 +57,7 @@
 			  (list '* (d u) v))) ;;; multiply the "d" of "u"(Recursion) by "v".
                                               ;;; Then add both together and put in the list
 		   (else (error))))))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (define d1  ;;; calling the function, "d"
   (λ (e)  ;;; input "e"
     (cond ((number? e) 0) ;;; If "e" is a number, output 0
@@ -42,9 +81,7 @@
                           (list '* (d v) u)) (* v v)))
                    
 		   (else (error))))))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (define d2
   (λ (e)
     (cond ((number? e) 0)
@@ -53,21 +90,31 @@
            (let ((op (car e)) (u (cadr e)) (v (caddr e)))
              (apply (lookup1 op d-op-table1)
                     (map (λ (ee) (d1 ee v)) u v)))))))
+<<<<<<< HEAD:Design & Semantics/ex1.rkt
 
+=======
+>>>>>>> dfe8b6bb80c969d13146dc20c4f5e594a1d6b113:Design & Semantics/ex1-D.rkt
 (define d-op-table1
   (list (list '+ (λ (u1 v1) (+ (d u1) (d v1))))
         (list '* (λ (u1 v1) (* (d u1) (d v1))))))
         
+<<<<<<< HEAD:Design & Semantics/ex1.rkt
 
+=======
+>>>>>>> dfe8b6bb80c969d13146dc20c4f5e594a1d6b113:Design & Semantics/ex1-D.rkt
 (define lookup1
   (λ (op table)
     (if (equal? op (caar table))
 	(cadar table)
 	(lookup op (cdr table)))))
+<<<<<<< HEAD:Design & Semantics/ex1.rkt
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+=======
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+>>>>>>> dfe8b6bb80c969d13146dc20c4f5e594a1d6b113:Design & Semantics/ex1-D.rkt
 (define d3
   (λ (e)
     (cond ((number? e) 0)
@@ -77,19 +124,26 @@
 	   (let ((op (car e)) (args (cdr e)))
 	     (apply (lookup op d-op-table) args))))))
     
+<<<<<<< HEAD:Design & Semantics/ex1.rkt
 
+=======
+>>>>>>> dfe8b6bb80c969d13146dc20c4f5e594a1d6b113:Design & Semantics/ex1-D.rkt
 (define d-op-table
   (list(list '+ (λ (u v) (+ (d3 u) (d3 v))))
        ;(list '* (λ (u v)
         ;  (list '+ (list '(* u (d3 v))) (list '(* v (d3 u))))))))
        (list '+ (λ (u1 v1)
              (list '(* u1 (d v1)))(list '(* (d u1) v1))))))
+<<<<<<< HEAD:Design & Semantics/ex1.rkt
 
+=======
+>>>>>>> dfe8b6bb80c969d13146dc20c4f5e594a1d6b113:Design & Semantics/ex1-D.rkt
 (define lookup
   (λ (op table)
     (if (equal? op (caar table))
 	(cadar table)
 	(lookup op (cdr table)))))
+<<<<<<< HEAD:Design & Semantics/ex1.rkt
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 |#
@@ -113,3 +167,7 @@
     (if (equal? op (caar table))
 	(cadar table)
 	(lookup op (cdr table)))))
+=======
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+|#
+>>>>>>> dfe8b6bb80c969d13146dc20c4f5e594a1d6b113:Design & Semantics/ex1-D.rkt
