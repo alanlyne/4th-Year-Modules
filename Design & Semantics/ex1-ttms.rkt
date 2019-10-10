@@ -21,7 +21,7 @@
         (list '/ (λ (x1 x2) (/ x1 x2))) ;Working
         (list 'expt (λ (x1 x2) (expt x1 x2))) ;Working
 
-        (list 'recip (λ (x1 x2) (/ x2 x1))) ;Working
+        (list 'recip (λ (x1) (/ 1 x1))) ;Working
         (list 'log log); Working
         
 	(list 'sin sin) ;Working

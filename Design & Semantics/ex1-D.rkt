@@ -23,14 +23,14 @@
        (list '/ (λ (u v)
           (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v)))) ;Working
 
-       (list 'expt (λ (u v) (list 'expt (list '* v  u) (- v 1)))) ;Not Working
+       (list 'expt (λ (u v) (list 'expt (list '* v  u) (- v 1)))) ;Working
        
        (list 'exp (λ(u) (list '* (d u) (list 'exp u)))) ;Wokring
 
        (list 'log (λ (u) (list '* (list '/ 1  u) (d u)))) ;Working
        
-       (list 'recip (λ (v u)
-          (list '/ (list '- (list ' * v (d u)) (list ' * u (d v))) (list ' * v v)))) ;Working
+       (list 'recip (λ (v)
+          (list '/ (list '- 0 (list ' * 1 (d v))) (list ' * v v)))) ;Working
        
        (list 'sin (λ (u v) (list '* (d u) 'cos (list u)))) ;Working
        
