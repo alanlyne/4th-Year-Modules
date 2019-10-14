@@ -1,33 +1,21 @@
 #lang racket
 
-<<<<<<< HEAD
-=======
 ;;; Alan Lyne 15468498
 
->>>>>>> 9947ddafb76ad26958ed1374963f5d54ae79dc4d
 ;;;Differentiation
 (define d
   (λ (e)
     (cond ((number? e) 0)
 	  ((equal? e 'x) 1)
-<<<<<<< HEAD
-=======
           ((equal? e '-x) -1)
->>>>>>> 9947ddafb76ad26958ed1374963f5d54ae79dc4d
 	  (else
 	   (let ((op (car e)) (args (cdr e)))
 	     (apply (lookup op d-op-table) args))))))
 
 (define d-op-table
-<<<<<<< HEAD
   (list(list '+ (λ (u v) (list '+ (d u) (d v)))) ;Working
        
        (list '- (λ (u v) (list '- (d u) (d v)))) ;Working
-=======
-  (list(list '+ (λ (u v) '+ (d u) (d v))) ;Working
-       
-       (list '- (λ (u v) '- (d u) (d v))) ;Working
->>>>>>> 9947ddafb76ad26958ed1374963f5d54ae79dc4d
        
        (list '* (λ (u v)
           (list '+ (list ' * u (d v)) (list ' * v (d u))))) ;Working
@@ -46,12 +34,8 @@
        
        (list 'sin (λ (u v) (list '* (d u) 'cos (list u)))) ;Working
        
-<<<<<<< HEAD
-       (list 'cos (λ (u v) (list '* list (d u) '* -1 'sin (list u)))))) ;Working
-=======
        (list 'cos (λ (u v) (list '* (d u) '* -1 'sin (list u)))))) ;Working
 
->>>>>>> 9947ddafb76ad26958ed1374963f5d54ae79dc4d
 
 
 ;;;TTMS-Eval
@@ -82,9 +66,6 @@
 
 
 ;;;Lookup Table
-<<<<<<< HEAD
-(define lookup (λ (x alist) (cadr (assoc x alist))))
-=======
 (define lookup (λ (x alist) (cadr (assoc x alist))))
 
 'Differentiation
@@ -105,10 +86,3 @@
 (ttms-eval '(recip (* x 2)) 7)
 (ttms-eval '(sin (* x 2)) 7)
 (ttms-eval '(cos (* x 2)) 7)
-
-
-
-
-
-
->>>>>>> 9947ddafb76ad26958ed1374963f5d54ae79dc4d
