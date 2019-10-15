@@ -151,3 +151,6 @@
 (ttms-eval '(sin (* x x)) 2)
 (ttms-eval '(cos (* 1 x)) 4)
 (ttms-eval '(+ (* 2 (/ 7 (+ 2 4))) (* 7 x)) 'x)
+
+;; good simp example would be 
+(d '(* (* x x) (+ 2 x)))
