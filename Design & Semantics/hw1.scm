@@ -32,13 +32,13 @@
        (list 'recip (λ (v)                      
           (list '/ (simp- 0 (simp* 1 (d v))) (simp* v v)))) 
 
-       (list 'sin (λ (u v) (list '* (d u) 'cos (list u)))) 
+       (list 'sin (λ (u) (simp* (d u) (simpcos u)))) 
        
-       (list 'cos (λ (u v) (list '* (d u) '* -1 'sin (list u))))
+       (list 'cos (λ (u) (simp* (d u) (simp* -1 (simpsin u)))))
 
        (list 'expt (λ (u v) (simpexpt (simp* v  u) (simp- v 1))))
        
-       (list 'exp (λ(u) (simp* (d u) (list 'exp u))))
+       (list 'exp (λ(u) (simp* (d u) (simpexp u))))
 
 ))
 
@@ -63,9 +63,9 @@
 
         (list '/ (λ (u v) (simp/ u v)))
         
-        (list 'expt (λ (u v) (expt u v))) 
+        (list 'expt (λ (u v) (simpexpt u v))) 
 
-        (list 'recip (λ (u) (/ 1 u)))
+        (list 'recip (λ (u) (simp/ 1 u)))
         
         (list 'log log)
         
@@ -99,6 +99,8 @@
 	  ((equal? y 0) 0)
           ((equal? x 1) y)
 	  ((equal? y 1) x)
+          ((equal? x -1) '- y)
+	  ((equal? y -1) '- x)
 	  (else (list '* x y)))))
 (define simp/ (λ (x y)
     (cond ((and (number? x) (number? y))
@@ -110,14 +112,21 @@
 	   (expt x y))
           ((equal? y 0) 1)
 	  ((equal? x 0) 0)
-          ((equal? y 1) x)
           ((equal? x 1) 1)
+          ((equal? y 1) x)
 	  (else (list 'expt x y)))))
-(define simpexp (λ (x y)
-    (cond ((and (number? x) (number? y))
-	   (/ x y))
-	  ((equal? x 0) 0)
-	  (else (list '/ x y)))))
+(define simpexp (λ (y)
+    (cond ((number? y)
+	   (exp y))
+	  (else (list 'exp y)))))
+(define simpsin (λ (x)
+    (cond ((number? x)
+	   (sin x ))
+          (else (list 'sin x)))))
+(define simpcos (λ (x)
+    (cond ((number? x)
+	   (cos x ))
+          (else (list 'cos x)))))
 
 ;;; test cases
 
@@ -129,15 +138,16 @@
 (d '(expt (* 2 x) 2 ))
 (d '(exp x))
 (d '(recip (* x x)))
-(d '(sin (* 7 x)2))
-(d '(cos (* 2 1)2))
+(d '(sin (* 7 x)))
+(d '(cos (* 2 1)))
 'ttms-eval
 (ttms-eval '(+ 1 (* 7 x)) 4)
 (ttms-eval '(- 1 (* 7 x)) 4)
-(ttms-eval '(/ 1 x) 2)
+(ttms-eval '(/ 1 x) 4)
 (ttms-eval '(log (* 4 x)) 4)
 (ttms-eval '(expt 15 (* 2 x)) 4)
 (ttms-eval '(exp (* 9 x)) -4)
 (ttms-eval '(recip (* x x)) -7)
 (ttms-eval '(sin (* x x)) 2)
 (ttms-eval '(cos (* 1 x)) 4)
+(ttms-eval '(+ (* 2 (/ 7 (+ 2 4))) (* 7 x)) 'x)
