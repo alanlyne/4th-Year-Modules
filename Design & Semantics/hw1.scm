@@ -24,13 +24,13 @@
           (simp+ (simp* u (d v)) (simp* v (d u))))) 
        
        (list '/ (λ (u v)
-          (simp/ (simp- (simp* v (d u)) (simp* u (d v))) (simp* v v)))) ;Working
+          (simp/ (simp- (simp* v (d u)) (simp* u (d v))) (simp* v v))))
 
 
        (list 'log (λ (u) (simp* (simp/ 1  u) (d u))))
        
        (list 'recip (λ (v)                      
-          (list '/ (simp- 0 (simp* 1 (d v))) (simp* v v)))) 
+          (simp/ (simp- 0 (simp* 1 (d v))) (simp* v v)))) 
 
        (list 'sin (λ (u) (simp* (d u) (simpcos u)))) 
        
@@ -69,11 +69,11 @@
         
         (list 'log log)
         
-	(list 'exp exp)
+	(list 'exp (λ (u) (exp u)))
 
-        (list 'sin sin)
+        (list 'sin (λ (u) (simpsin u)))
         
-	(list 'cos cos)
+	(list 'cos (λ (u) (simpsin u)))
         ))
 
 (define ttml-lookup (λ (x alist) (cadr (assoc x alist))))
@@ -131,26 +131,26 @@
 ;;; test cases
 
 'differentiation
-(d '(- (- x 1) (- x -1)))
-(d '(* (+ x 1) (+ x -1)))
-(d '(/ 5 (+ x -1)))
-(d '(log x))
-(d '(expt (* 2 x) 2 ))
-(d '(exp x))
-(d '(recip (* x x)))
-(d '(sin (* 7 x)))
-(d '(cos (* 2 1)))
+(d '(- (- x 1) (- x -1))) ;0
+(d '(* (+ x 1) (+ x -1))) ;'(+ (+ x 1) (+ x -1))
+(d '(/ 5 (+ x -1))) ;'(/ -5 (* (+ x -1) (+ x -1)))
+(d '(log x)) ;'(/ 1 x)
+(d '(expt (* 2 x) 2 )) ;'(* 2 (* 2 x))
+(d '(exp (* 2 x))) ;'(* 2 (exp (* 2 x)))
+(d '(recip (* x x))) ;'(/ (- (* 2 x)) (* (* x x) (* x x)))
+(d '(sin (* 7 x))) ;'(* 7 (cos (* 7 x)))
+(d '(cos (* x 1))) ;'(sin (* x 1))
 'ttms-eval
-(ttms-eval '(+ 1 (* 7 x)) 4)
-(ttms-eval '(- 1 (* 7 x)) 4)
-(ttms-eval '(/ 1 x) 4)
-(ttms-eval '(log (* 4 x)) 4)
-(ttms-eval '(expt 15 (* 2 x)) 4)
-(ttms-eval '(exp (* 9 x)) -4)
-(ttms-eval '(recip (* x x)) -7)
-(ttms-eval '(sin (* x x)) 2)
-(ttms-eval '(cos (* 1 x)) 4)
-(ttms-eval '(+ (* 2 (/ 7 (+ 2 4))) (* 7 x)) 'x)
+(ttms-eval '(+ 1 (* 7 x)) 4) ; 29
+(ttms-eval '(- 1 (* 7 x)) 'x) ;'(- 1 (* 7 x))
+(ttms-eval '(/ 1 x) 4) ;1/4
+(ttms-eval '(log (* 4 x)) 4) ;2.772588722239781
+(ttms-eval '(expt 15 (* 2 x)) 4) ;2562890625
+(ttms-eval '(exp (* 9 x)) -4) ;2.3195228302435696e-16
+(ttms-eval '(recip (* x x)) -7) ;1/49
+(ttms-eval '(sin (* x x)) 2) ;-0.7568024953079282
+(ttms-eval '(cos (* 1 x)) 3) ;0.1411200080598672
+(ttms-eval '(+ (* 2 (/ 7 (+ 2 4))) (* 7 x)) 'x) ;'(+ 2 1/3 (* 7 x))
 
-;; good simp example would be 
-(d '(* (* x x) (+ 2 x)))
+;; good simp example would be, none simp '(+ (* (* x x) (+ 0 1)) (* (+ 2 x) (+ ( * x 1) (* x 1))))
+(d '(* (* x x) (+ 2 x))) ;'(+ (* x x) (* (+ 2 x) (* 2 x)))
