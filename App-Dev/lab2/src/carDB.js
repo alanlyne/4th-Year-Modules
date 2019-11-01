@@ -58,6 +58,7 @@ export const  peopleCarDB =
 {id:57,name:"Tiff Chorlton",miles2019:6129,car:"Toyota",caryear:1982},
 {id:58,name:"Anabella Alasdair",miles2019:14162,car:"Toyota",caryear:1995},
 {id:59,name:"Thorn Genike",miles2019:4583,car:"Nissan",caryear:2010},
-{id:60,name:"Lamar Bossons",miles2019:12205,car:"Saturn",caryear:2006}
+{id:60,name:"Lamar Bossons",miles2019:12205,car:"Saturn",caryear:2006},
+{id:61,name:"Alan Lyne",miles2019:14865,car:"Toyota",caryear:2019}
 ]
 ;
