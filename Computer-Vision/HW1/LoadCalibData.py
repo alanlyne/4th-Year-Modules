@@ -7,58 +7,44 @@ from mpl_toolkits.mplot3d import axes3d
 
 data = np.loadtxt('X:/4thYear/4th-Year-Modules/Computer-Vision/HW1/data.txt')
 
-
 def calibrateCamera3D(data):
     world_points = data[:,:3]  # Gets the first 3 points (x, y, z) of real world
-    # print(world_points[:,0:1])
-    # quit()
-
-    image_points = data[:, 3:] # Gets the last two (X,Y) of 2d world
-    # print(world_points, "\n" ,image_points)
-    # print(image_points.shape[0])
-    # print(image_points.shape[1])
-    # print(world_points.shape[2])
-    # quit()
-    # quit()
-    # b = np.ones((image_points.shape[0], image_points.shape[1] + 1))
-    # b[:, :-1] = image_points
-    # b = np.ones(world_points.shape[0], world_points.shape[1]+ 1)
-    # b = np.ones((image_points.shape[0], image_points.shape[1] + 1))
-    # b[:, :-1] = image_points
+    
     b = np.ones((world_points.shape[0], 1))
     
-    #print(np.hstack((world_points, b)))
-    # # print(np.dot(world_points, b.transpose()))
-    # # print(np.dot(world_points.transpose(), image_points))
-    # quit()
-    # print(image_points)
     A = np.zeros((len(data) * 2, 12))
 
-    for i in range(len(data)):
-        worldX = world_points[i][0]
-        worldY = world_points[i][1]
-        worldZ = world_points[i][2]
+    final_matrix = []
 
-        imageX = image_points[i][0]
-        imageY = image_points[i][1]
+    for line in data:
+        worldX = line[0]
+        worldY = line[1]
+        worldZ = line[2]
+
+        imageX = line[3]
+        imageY = line[4]
         # imageZ = int(b[i][2])
 
         X = [worldX, worldY, worldZ, 1, 0, 0, 0, 0, -imageX * worldX, -imageX * worldY, -imageX * worldZ, -imageX]
+        
         # Y: [0, 0, 0, 0, 1, X, Y, Z, -yX, -yY, -yY, -y]
         Y = [0, 0, 0, 0, worldX, worldY, worldZ, 1, -imageY * worldX, -imageY * worldY, -imageY * worldZ, -imageY]
 
-        
+        final_matrix.append(X)
+        final_matrix.append(Y)
+        # print(A_NEW)
 
-        #A = np.append(X, Y)
-        print(f"{X} \n {Y}")
+        # print(f"{X} \n {Y}")
 
-    # print(A)
-    D, V = np.linalg.eig(A.transpose().dot(A))
-    print(D)
-    print()
-    print()
-    print(V)
-    # print(A)
+    final_matrix = np.asarray(final_matrix)
+
+    D, V = np.linalg.eig(final_matrix.transpose().dot(final_matrix))
+
+    estlp = V[:,np.argmin(D)]
+    #print(estlp)
+    ypts_est =(-(estlp[2] + estlp[0]*X) / estlp[1])
+    print(ypts_est)
+
     quit()
 
 
