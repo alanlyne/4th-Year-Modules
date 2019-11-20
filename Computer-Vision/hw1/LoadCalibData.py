@@ -5,17 +5,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
-data = np.loadtxt('C:\\Users\\Alan\\Documents\\Programming\\4th-Year-Modules\\Computer-Vision\\hw1\\data.txt')
+data = np.loadtxt('data.txt')
 
 endPoints = None
 point = None
 
 def calibrateCamera3D(data):
-    #world_points = data[:,:3]  # Gets the first 3 points (x, y, z) of real world
-    
-    #b = np.ones((world_points.shape[0], 1))
-    
-   # A = np.zeros((len(data) * 2, 12))
 
     final_matrix = []
 
@@ -29,32 +24,22 @@ def calibrateCamera3D(data):
 
         X = [worldX, worldY, worldZ, 1, 0, 0, 0, 0, -imageX * worldX, -imageX * worldY, -imageX * worldZ, -imageX]
         
-        # Y: [0, 0, 0, 0, 1, X, Y, Z, -yX, -yY, -yY, -y]
         Y = [0, 0, 0, 0, worldX, worldY, worldZ, 1, -imageY * worldX, -imageY * worldY, -imageY * worldZ, -imageY]
 
         final_matrix.append(X)
         final_matrix.append(Y)
-        # print(A_NEW)
-
-        # print(f"{X} \n {Y}")
 
     final_matrix = np.asarray(final_matrix)
-    #print(final_matrix)
 
     D, V = np.linalg.eig(final_matrix.transpose().dot(final_matrix))
 
     estlp = V[:,np.argmin(D)]
-    # print(estlp)
-    #ypts_est =(-(estlp[2] + estlp[0]*X) / estlp[1])
-    #print(ypts_est)
 
     P = np.zeros((3,4))
     P[0:] = estlp[0:4]
     P[1:] = estlp[4:8]
     P[2:] = estlp[8:12]
 
-    # print(P, type(P))
-    # quit()
     return P
 
 def visualiseCameraCalibration3D(data, P):
