@@ -1,6 +1,3 @@
-'''Visualises the data file for cs410 camera calibration assignment
-To run: %run LoadCalibData.py
-'''
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
@@ -34,12 +31,12 @@ def calibrateCamera3D(data):
     D, V = np.linalg.eig(final_matrix.transpose().dot(final_matrix))
 
     estlp = V[:,np.argmin(D)]
-
+   
     P = np.zeros((3,4))
     P[0:] = estlp[0:4]
     P[1:] = estlp[4:8]
     P[2:] = estlp[8:12]
-
+  
     return P
 
 def visualiseCameraCalibration3D(data, P):
@@ -54,15 +51,15 @@ def visualiseCameraCalibration3D(data, P):
     imageY = data[:,4]
 
     worldPoints = np.ones((491, 4))
-    for x in range(len(data)):
-        worldPoints[x,0] = worldX[x]
-        worldPoints[x,1] = worldY[x]
-        worldPoints[x,2] = worldZ[x]
+    for line in range(len(data)):
+        worldPoints[line,0] = worldX[line]
+        worldPoints[line,1] = worldY[line]
+        worldPoints[line,2] = worldZ[line]
 
     point = np.ones((491, 3))
-    for x in range(len(data)):
-        point[x,0] = imageX[x]
-        point[x,1] = imageY[x]
+    for line in range(len(data)):
+        point[line,0] = imageX[line]
+        point[line,1] = imageY[line]
 
     worldPoints = P.dot(worldPoints.transpose())
     endPoints = worldPoints.transpose()
@@ -81,15 +78,14 @@ def evaluateCameraCalibration3D(data, P):
     global endPoints
     global point
 
-    dist = np.subtract(point, endPoints)
-    print("Average distance between the two matrices is: " + str(np.mean(dist)) )
+    dist = (np.abs(np.subtract(point, endPoints)))
+    print("Mean distance between the two matrices: " + str(np.mean(dist)) )
 
-    print("Standard deviation/variance of measured 2D points: " + str(np.std(point)))
-    print("Standard deviation/variance of re-projected 2D points: " + str(np.std(endPoints)))
+    print("The Variance of the points: " + str(np.std(dist)))
+    
+    print("Maximum distance between the two matrices: " + str(np.max(dist)))
 
-    print("Maximum distance between the two matrices: " + str(np.abs(np.max(dist))))
-
-    print("Minimum distance between the two matrices: " + str(np.abs(np.min(dist))))
+    print("Minimum distance between the two matrices: " + str(np.min(dist)))
 
 P = calibrateCamera3D(data)
 
