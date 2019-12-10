@@ -9,30 +9,6 @@ point = None
 
 def calibrateCamera3D(data):
 
-<<<<<<< HEAD
-fig = plt.figure()
-ax = fig.gca(projection="3d")
-ax.plot(data[:,0], data[:,1], data[:,2], data[:,3], data[:,4],'k.')
-
-plt.show()
-
-
-fig = plt.figure()
-ax = fig.gca(projection="3d")
-ax.plot(calibrateCamera3D(data))
-
-
-P = calibrateCamera3D(data)
-
-def calibrateCamera3D(data):
-    data[:,0], data[:2]
-
-plt.show()
-
-
-
-
-=======
     final_matrix = []
 
     for line in data:
@@ -116,4 +92,3 @@ P = calibrateCamera3D(data)
 visualiseCameraCalibration3D(data, P)
 
 evaluateCameraCalibration3D(data, P)
->>>>>>> 4034b3e9a078a6a06369709a6176ce3572dd129e
