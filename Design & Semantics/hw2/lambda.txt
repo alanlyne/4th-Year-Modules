@@ -1,3 +1,0 @@
-(λ t . (λ m . λ n . n (λ n . λ f . λ x . n f (f x)) m) ((λ n . (λ m . λ n . λ f . m (n f)) n n) ((λ n . (λ m . λ n . λ f . m (n f)) n n) t)) ((λ n . (λ m . λ n . λ f . m (n f)) n n) t)) ((λ m . λ n . n (λ n . λ f . λ x . n f (f x)) m) ((λ m . λ n . λ f . m (n f)) (λ f . λ x . x) ((λ m . λ n . n (λ n . λ f . λ x . n f (f x)) m) ((λ n . λ f . λ x . n f (f x)) (λ f . λ x . x)) ((λ n . λ f . λ x . n f (f x)) (λ f . λ x . x)))) ((λ n . λ f . λ x . n f (f x)) ((λ n . λ f . λ x . n f (f x)) (λ f . λ x . x))))
-
-λf.λx.f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(f(fx)))))))))))))))))))
