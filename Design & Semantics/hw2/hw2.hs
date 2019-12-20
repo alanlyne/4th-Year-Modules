@@ -2,23 +2,12 @@ import Data.List
 import System.IO
 {-# LANGUAGE UnicodeSyntax #-}
 
--- :l hw2.hs
-main = do
-    -- Prints the string with a new line
-    putStrLn "What's your name: "
-    -- Gets user input and stores it in name
-    -- <- Pulls the name entered from an IO action
-    name <- getLine
-    putStrLn ("Hello " ++ name)
-
-
-pain = do 
-    putStrLn "What is 2 + 2?"
-   
-    x <- readLn
-    if x == 4
-        then putStrLn "You're right!"
-        else putStrLn "You're wrong!"
+data Term = Variable String | Application Term Term | Lambda String Term
+  deriving Show
+data Term' = Variable' String | Application' Term' [Term'] | Lambda' [String] Term'
+  deriving Show
+Term :: String -> String
+let replace = concatMap (\c -> if c=='O' then "X" else "XX")
 
 
 --printDash' = getChar >>= (\c -> putChar c >> putChar '-' >> putChar c >> putChar '\n')
@@ -26,7 +15,7 @@ pain = do
     -- a >> b = a >>= (\_ -> b)
 
 lemmacheck x = do
-  if x == "/"
+  if x == "/" && head xs == 
     then putStr "Lambda"
     else do
       if x == "."
@@ -60,7 +49,5 @@ printDash xs = do
     --putStrLn zs
         
 getlemma = do
-  putStrLn "What's your sum: "
-
   xs <- getLine
   printDash xs
