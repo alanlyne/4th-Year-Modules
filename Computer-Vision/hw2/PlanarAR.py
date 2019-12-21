@@ -28,7 +28,7 @@ def signal_handler(signal, frame):
         sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
-##########
+
 
 ############## calibration of plane to plane 3x3 projection matrix
 
@@ -57,9 +57,6 @@ def compute_homography(fp,tp):
     # normalise and return
     return H
 
-##############
-
-
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
@@ -75,13 +72,13 @@ objp[:,:2] = np.mgrid[0:HEIGHT,0:WIDTH].T.reshape(-1,2)
 cap = cv2.VideoCapture(0)
 
 ## Step 0: Load the image you wish to overlay
-im = cv2.imread(r'C:\Users\Alan\Documents\Programming\cat.jpg')
+image = cv2.imread(r'C:\Users\Alan\Documents\Programming\cv.png')
 
-cutx = np.linspace(640,0,9)
-cuty = np.linspace(0,480,6)
-tp = np.c_[np.asarray(list(product(cutx, cuty))),np.ones(54)]
+x = np.linspace(640,0,9)
+y = np.linspace(0,480,6)
+tp = np.c_[np.asarray(list(product(x, y))),np.ones(54)]
 
-while (True):
+while True:
     #capture a frame
     ret, img = cap.read()
 
@@ -98,7 +95,7 @@ while (True):
     # If found, add object points, image points (after refining them)
     if ret == True:
         cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
-        cv2.drawChessboardCorners(img, (HEIGHT,WIDTH), corners,ret)
+        #cv2.drawChessboardCorners(img, (HEIGHT,WIDTH), corners,ret)
         ## Step 1a: Compute fp -- an Nx3 array of the 2D homogeneous coordinates of the
         ## detected checkerboard corners
         corners = np.asmatrix(corners)
@@ -111,37 +108,34 @@ while (True):
         tp = np.asarray(tp)
 
         ## Step 2: Compute the homography from tp to fp
-        H = compute_homography(tp,fp)
+        Homography = compute_homography(tp,fp)
 
         ## Step 3: Compute warped mask image
         tp = np.asmatrix(tp)
 
-        im[:,2] = 0
-        H = np.asarray(H)
-        wpimg = cv2.warpPerspective(im,H,dsize=(640,480))
-        #,flags = cv2.WARP_INVERSE_MAP)
+        image[:,2] = 0
+        Homography = np.asarray(Homography)
+        wpImage = cv2.warpPerspective(image, Homography, dsize=(640,480))
 
         ## Step 4: Compute warped overlay image
-        rows,cols,chans =wpimg.shape
-        roi = img[0:rows,0:cols]
+        rows, columns = wpImage.shape[0], wpImage.shape[1]
+        imageR = img[0:rows,0:columns]
         #convert it to gray scale
-        graysrc = cv2.cvtColor(wpimg,cv2.COLOR_BGR2GRAY)
+        graysrc = cv2.cvtColor(wpImage,cv2.COLOR_BGR2GRAY)
         #creating the mask, and the it's inverse
         ret,mask = cv2.threshold(graysrc, 10, 255 , cv2.THRESH_BINARY)
         mask_inv = cv2.bitwise_not(mask)
-        #black out the area in ROI, this is where the imposed image would go
-        img1_bg  = cv2.bitwise_and(roi,roi,mask = mask_inv)
-        #i take only the region of our 'src' image
-        img2_fg = cv2.bitwise_and(wpimg,wpimg,mask=mask)
-        #puts the two together and the modify the main image
-        dst = cv2.add(img1_bg,img2_fg)
-        img[0:rows,0:cols] = dst
-        #displays result
-
+        #black out the area in imageR, this is where the imposed image would go
+        image1_bg  = cv2.bitwise_and(imageR, imageR, mask = mask_inv)
+        #take only the region of our image
+        image2_fg = cv2.bitwise_and(wpImage, wpImage, mask=mask)
+        #put the two together and the modify the main image
+        distance = cv2.add(image1_bg,image2_fg)
+        img[0:rows,0:columns] = distance
+    
         ## Step 5: Compute final image by combining the warped frame with the captured frame
 
     cv2.imshow('og',img)
-    
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
        break
