@@ -17,8 +17,7 @@
 (define (scatterGather indices values)
   (cond ((null? indices)
          '())
-        
-        ((>(+(length values) 2)(car indices)) 
+        ((<(car indices)(length values)) 
         (cons (list-ref values (car indices))(scatterGather (cdr indices) values)))
         
         (else
