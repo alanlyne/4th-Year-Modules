@@ -17,7 +17,7 @@
          (cons '#f(scatterGather (cdr indices) values)))))
  
 
-(scatterGather '(0 1 4 1 1 7 2) '(a b c d e))
+;(scatterGather '(0 1 4 1 1 7 2) '(a b c d e))
 ;=> (a b e b b #f c)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -55,14 +55,13 @@ NB: (car lst) == (+ (car lst)) why? why + optional and still works?
 ;first of which is the elements of xs that pass p?, and the second
 ;of which is the elements of xs that fail it, both in order.
 
-(define tear
-  (λ (p? xs)
-  (list (filter p? xs) (filter (λ (x)(not (p? x))) xs))))
+(define (tear p? xs)
+  (list (filter p? xs)(filter (lambda (notNum)(not (p? notNum))) xs)))
 ;Filter returns a list with the elements of "xs" for which "(λ (x)(not (p? x)))" produces a true value.
 ;The "(λ (x)(not (p? x)))" procedure is applied to each element from first to last.
 ;List returns a newly allocated list.
 
-;(tear number? '(a b c 1 2 3 d e f))
+(tear number? '(a b c 1 2 3 d e f))
 ;=> ((1 2 3) (a b c d e f))
 ;(tear (lambda (x) (> x 5)) '(1 10 2 12 3 13))
 ;=> ((10 12 13) (1 2 3))
