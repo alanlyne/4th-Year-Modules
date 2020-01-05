@@ -1,18 +1,11 @@
 #lang racket
 
-; Jan 2019
+;Jan 2019
 ;Define a Scheme function SCATTER-GATHER which takes two
 ;arguments, a list INDICES of indices and a list VALS of values,
 ;and returns a list of the same length as INDICES but with each
 ;value K replaced by the K-th element of VALS, or if that is out of
 ;range, by #f.
-
-;(define (sg indices val)
-;  (if (null? indices)
-;      '()
-;      (with-handlers ([exn:fail? (lambda (exn) #f)])
-;      (cons (list-ref val (car ind)) (sg (cdr ind) val)))))
-
 
 (define (scatterGather indices values)
   (cond ((null? indices)
@@ -26,13 +19,7 @@
 
 (scatterGather '(0 1 4 1 1 7 2) '(a b c d e))
 ;=> (a b e b b #f c)
-#|
-(define (scatterGather indices values)
-  (if (null? ind)
-      '()
-      (with-handlers ([exn:fail? (lambda (exn) #f)])
-      (cons (list-ref values (car indices)) (scatterGather (cdr indices) values)))))
-|#
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  
 ;Autumn 2019
