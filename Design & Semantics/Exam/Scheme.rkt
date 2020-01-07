@@ -8,13 +8,10 @@
 ;range, by #f.
 
 (define (scatterGather indices values)
-  (cond ((null? indices)
-         '())
+  (cond ((null? indices) '())
         ((<(car indices)(length values)) 
         (cons (list-ref values (car indices))(scatterGather (cdr indices) values)))
-        
-        (else
-         (cons '#f(scatterGather (cdr indices) values)))))
+        (else (cons '#f(scatterGather (cdr indices) values)))))
  
 
 ;(scatterGather '(0 1 4 1 1 7 2) '(a b c d e))

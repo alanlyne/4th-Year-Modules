@@ -16,8 +16,8 @@
 scatterGather :: b -> [Int] -> [b] -> [b]
 scatterGather f indices values
         | null indices = []
-        | (length values) + 2 > head indices = values !! head indices : scatterGather f (drop 1 indices) values
-        | otherwise = [f] ++ scatterGather f (drop 1 indices) values
+        | (length values) > head indices = values !! head indices : scatterGather f (drop 1 indices) values
+        | otherwise = f : scatterGather f (drop 1 indices) values
 
 -- scatterGather '_' [0,1,4,1,1,7,2] "abcde"
 -- => "abebb_c"
@@ -34,7 +34,11 @@ scatterGather f indices values
 --second those that don't, in order.
 
 tear :: (a -> Bool) -> [a] -> [[a]]
-tear func lst = [[ a | a <- lst, func a ], [a | a <- lst, not(func a)]]
+tear func lst = [[ b | b <- lst, func b ], [b | b <- lst, not(func b)]]
+
+--  b | b, bool  make b if bool is true
+-- b <- lst pop first ele from list as b
+-- [ b | b, bool ] b var to list if bool is true
 
 -- tear (>5) [1,10,2,12,3,13]
 -- => [[10,12,13],[1,2,3]]
