@@ -34,10 +34,9 @@ scatterGather f indices values
 --second those that don't, in order.
 
 tear :: (a -> Bool) -> [a] -> [[a]]
-tear func lst = [[ b | b <- lst, func b ], [b | b <- lst, not(func b)]]
+tear func lst = [[ b | b <- lst, func b ], [c | c <- lst, not(func c)]]
 
 --  b | b, bool  make b if bool is true
--- b <- lst pop first ele from list as b
 -- [ b | b, bool ] b var to list if bool is true
 
 -- tear (>5) [1,10,2,12,3,13]

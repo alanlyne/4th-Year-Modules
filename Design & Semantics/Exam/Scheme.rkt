@@ -71,11 +71,19 @@ NB: (car lst) == (+ (car lst)) why? why + optional and still works?
 ;every other element of the given list, starting with the first
 ;element.
 
-(define map-skip
-  (λ (func l)
-    (cond ((null? l)'());If l is empty/null, return an empty list
-          (else
-           (append (list (func (car l))(cadr l))(map-skip func(drop l 2)))))))
+;(define map-skip
+;  (λ (func l)
+;    (cond ((null? l)'());If l is empty/null, return an empty list
+;          (else
+;           (append (list (func (car l))(cadr l))(map-skip func(drop l 2)))))))
+
+(define (map-skip func l)
+  (cond ((null? l)'())
+        ((=(length l)1)
+         (cons(func (car l)) '()))
+        (else
+         (cons (func (car l)) (cons (cadr l) (map-skip func(cddr l)))))))
+  
 ;"(func (car l))" applys the first element in l to x. i.e x=2, (+ x 1000) then adds them together
 ;"list" creates a new list with the new value and the remainder of the list
 ;"(map-skip func(drop l 2))" drops the first 2 elements of l.
