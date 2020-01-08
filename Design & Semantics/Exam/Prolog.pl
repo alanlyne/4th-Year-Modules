@@ -1,3 +1,25 @@
+%Jan 2019
+%Define the Prolog predicate runs/1 which is true of lists whose
+%elements each have an identical adjacent element.
+
+runs([]).
+runs([X,X|Y]) :- runs(Y).
+runs([X,X,X|Y]) :- runs([X,X|Y]).
+
+%?- runs([a,a,b,b,b,c,c,d,d,d,d,e,e]).
+%true.
+%?- runs([a,a,b,b,b,c,X,d,d,d,d,e,e]).
+%X=c
+%?- runs([a,a,b,b,b,c,c,X,d,d,d,e,e]).
+%X=c 
+%X=d
+%?- runs([a]).
+%false.
+%?- runs([]).
+%true.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %Jan 2018
 %Define a Prolog predicate mul/3 (+,+,-) which is true when, given
 %three lists, the length of the third is the product of the lengths

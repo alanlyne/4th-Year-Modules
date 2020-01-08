@@ -52,8 +52,8 @@ NB: (car lst) == (+ (car lst)) why? why + optional and still works?
 ;first of which is the elements of xs that pass p?, and the second
 ;of which is the elements of xs that fail it, both in order.
 
-(define (tear p? xs)
-  (list (filter p? xs)(filter (lambda (notNum)(not (p? notNum))) xs)))
+(define (tear p xs)
+  (list (filter p xs)(filter (lambda (notNum)(not (p notNum))) xs)))
 ;Filter returns a list with the elements of "xs" for which "(λ (x)(not (p? x)))" produces a true value.
 ;The "(λ (x)(not (p? x)))" procedure is applied to each element from first to last.
 ;List returns a newly allocated list.
