@@ -33,8 +33,11 @@ scatterGather f indices values
 --those elements of the input list which pass the predicate, the
 --second those that don't, in order.
 
+--tear :: (a -> Bool) -> [a] -> [[a]]
+--tear func lst = [[ b | b <- lst, func b ], [c | c <- lst, not(func c)]]
+
 tear :: (a -> Bool) -> [a] -> [[a]]
-tear func lst = [[ b | b <- lst, func b ], [c | c <- lst, not(func c)]]
+tear p x = (filter p x):(filter (not.p) x):[]
 
 --  b | b, bool  make b if bool is true
 -- [ b | b, bool ] b var to list if bool is true
