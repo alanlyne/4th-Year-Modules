@@ -1,13 +1,17 @@
+%Define a predicate mushed/3 which is true when its three arguments, 
+%all lists, has the third list containing all elements of the first two arguments, in order.
+
 mushed([],[],[]).
 
-mushed([X|Xs], Ys, [X|Zs]) :- 
-    mushed(Xs, Ys, Zs).
+mushed([A|As], Bs, [A|Cs]) :- 
+    mushed(As, Bs, Cs).
 
-mushed(Xs, [Y|Ys], [Y|Zs]) :- 
-    mushed(Xs, Ys, Zs).
+mushed(As, [B|Bs], [B|Cs]) :- 
+    mushed(As, Bs, Cs).
 
-
+%Define circular/2 which is true when its first argument is a non-empty list 
+%and its second argument is a list consisting of zero or more appended copies of the first argument.
 circular([_|_], []). 
 
-circular([H|L1], L2) :- 
-    append([H|L1], L3, L2), circular([H|L1], L3).
+circular([A|List1], List2) :- 
+    append([A|List1], List3, List2), circular([A|List1], List3).

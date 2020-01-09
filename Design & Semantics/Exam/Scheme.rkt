@@ -18,31 +18,18 @@
 ;=> (a b e b b #f c)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 
+
 ;Autumn 2019
-(define (plusevens  lst)
+;Define a Scheme function PLUSEVENS which takes a list of number and 
+;returns the sum of those that occur in even positions in the list.
+
+(define (plusevens lst)
   (if (> 3 (length lst)) ; length less than 3
             (car lst)                    
-            (+ (car lst) ; add first element of new list           
-               (plusevens (cddr lst))))) ; pass back the list with the top two elements taken off it
-#| 
+            (+ (car lst)(plusevens (cddr lst)))))
 
-Example 
-(plusevens '(1 20 300 4000 50000 600000)) => 50301
-
-+ 1
-lst => (300 4000 50000 600000)
-
-+300
-lst => (50000 600000)
-(lentgth of lst < 3)
-(car lst)
-50000
-
-add all together
-
-NB: (car lst) == (+ (car lst)) why? why + optional and still works?
-|#
+;(plusevens '(1 20 300 4000 50000 600000)) 
+;=> 50301
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -54,6 +41,7 @@ NB: (car lst) == (+ (car lst)) why? why + optional and still works?
 
 (define (tear p xs)
   (list (filter p xs)(filter (lambda (notNum)(not (p notNum))) xs)))
+
 ;Filter returns a list with the elements of "xs" for which "(λ (x)(not (p? x)))" produces a true value.
 ;The "(λ (x)(not (p? x)))" procedure is applied to each element from first to last.
 ;List returns a newly allocated list.
