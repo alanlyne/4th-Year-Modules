@@ -23,10 +23,10 @@
 ;Define a Scheme function PLUSEVENS which takes a list of number and 
 ;returns the sum of those that occur in even positions in the list.
 
-(define (plusevens lst)
-  (if (> 3 (length lst)) ; length less than 3
-            (car lst)                    
-            (+ (car lst)(plusevens (cddr lst)))))
+(define (plusevens list)
+  (cond ((<(length list)3)
+         (car list))
+        (else(+ (car list)(plusevens (cddr list))))))
 
 ;(plusevens '(1 20 300 4000 50000 600000)) 
 ;=> 50301
@@ -65,18 +65,14 @@
 ;          (else
 ;           (append (list (func (car l))(cadr l))(map-skip func(drop l 2)))))))
 
-(define (map-skip func l)
-  (cond ((null? l)'())
-        ((=(length l)1)
-         (cons(func (car l)) '()))
+(define (map-skip func list)
+  (cond ((null? list)
+         '())
+        ((=(length list)1)
+         (cons(func (car list)) '()))
         (else
-         (cons (func (car l)) (cons (cadr l) (map-skip func(cddr l)))))))
+         (cons (func (car list)) (cons (cadr list) (map-skip func(cddr list)))))))
   
-;"(func (car l))" applys the first element in l to x. i.e x=2, (+ x 1000) then adds them together
-;"list" creates a new list with the new value and the remainder of the list
-;"(map-skip func(drop l 2))" drops the first 2 elements of l.
-;The process happens again until l is empty/null.
-;"appeand" puts everything together at the end
 
 ;(map-skip (λ (x) (+ x 1000)) '(1 2 3 4 5 6))
 ;=> (1001 2 1003 4 1005 6)

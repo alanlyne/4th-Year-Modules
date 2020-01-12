@@ -7,12 +7,6 @@
 -- additional first argument which is the value to use when an index
 -- it out of range. Be sure to give a type signature.
 
--- Define a Scheme function SCATTER-GATHER which takes two
--- arguments, a list INDICES of indices and a list VALS of values,
--- and returns a list of the same length as INDICES but with each
--- value K replaced by the K-th element of VALS, or if that is out of
--- range, by #f.
-
 scatterGather :: b -> [Int] -> [b] -> [b]
 scatterGather f indices values
         | null indices = []
