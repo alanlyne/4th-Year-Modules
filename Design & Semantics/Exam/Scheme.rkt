@@ -78,3 +78,26 @@
 ;=> (1001 2 1003 4 1005 6)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Aug 2017 NOT FULLY WORKING
+;Define a Scheme function foo that takes two lists and yields a list combining all the
+;elements in the two input lists, taking 1 from the first list, 2 from the second list, 3 from
+;the first list, 4 from the second list, etc, until both are exhausted.
+
+(define (foo l1 l2)
+    (poof l1 l2 1))
+
+(define (poof l1 l2 x)
+    (cond
+      ((and (null? l1) (null? l2))'())
+      ((>= x (length l1)) l2)
+      ((>= x (length l2)) l1)
+      (else
+       (append (append (take l1 x) (poof l2 (drop l1 x) (+ x 1)))))))
+
+;(foo '(a b c d e f g) '(aa bb cc dd ee ff gg))
+;=> (a aa bb b c d cc dd ee ff e f g gg)
+;(foo '(a b c d e f g) '())
+;=> (a b c d e f g)
+;(foo '() '(aa bb cc dd ee ff gg))
+;=> (aa bb cc dd ee ff gg)
