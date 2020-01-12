@@ -46,9 +46,9 @@
 ;The "(λ (x)(not (p? x)))" procedure is applied to each element from first to last.
 ;List returns a newly allocated list.
 
-(tear number? '(a b c 1 2 3 d e f))
+;(tear number? '(a b c 1 2 3 d e f))
 ;=> ((1 2 3) (a b c d e f))
-(tear (lambda (x) (> x 5)) '(1 10 2 12 3 13))
+;(tear (lambda (x) (> x 5)) '(1 10 2 12 3 13))
 ;=> ((10 12 13) (1 2 3))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -79,12 +79,35 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;Jan 2017
+;Define a Scheme function foo which finds all atoms inside an sexpression which pass a given predicate.
+
+(define (foo func list)
+   (cond ((null? list)
+         '())
+         ((list? (car list))
+          (foo func (flatten list))) ;Flatten turns several lists into one list (a (2 (c 3) 4))) -> (a 2 c 3 4)
+         ((eq? (func (car list)) #t) ;Checks if the 1st element in list is (e.g) a number
+          (cons (car list) (foo func (cdr list))))
+         (else (foo func (cdr list)))))
+
+;(foo number? '(a (2 (c 3) 4)))
+;=> (2 3 4)
+;(foo symbol? '(a (2 (c 3) 4)))
+;=> (a c)
+;(foo symbol? 'a)
+;=> (a)
+;(foo number? 'a)
+;=> ()
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;Aug 2017 NOT FULLY WORKING
 ;Define a Scheme function foo that takes two lists and yields a list combining all the
 ;elements in the two input lists, taking 1 from the first list, 2 from the second list, 3 from
 ;the first list, 4 from the second list, etc, until both are exhausted.
 
-(define (foo l1 l2)
+(define (foO l1 l2)
     (poof l1 l2 1))
 
 (define (poof l1 l2 x)
@@ -101,3 +124,25 @@
 ;=> (a b c d e f g)
 ;(foo '() '(aa bb cc dd ee ff gg))
 ;=> (aa bb cc dd ee ff gg)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;Jan 2016
+;Define a Scheme function reverse-with-count which takes two
+;lists, the second of which is a list of non-negative integers the
+;same length as the first list, and returns a list of elements from
+;the first list, in reverse order, each repeated a number of times
+;as specified by the corresponding element of the second list.
+
+(define (revCount list1 list2)
+  (cond ((null? list2) '())
+        (else (flatten (cons (make-list (car (reverse list2)) (car (reverse list1))) (revCount (reverse (cdr (reverse list1))) (reverse (cdr (reverse list2)))))))))
+
+;"Make a list" with the 1st value of the reversed 2nd list, with the number of iterations given by the 1st value of the reversed 1st list
+
+;(revCount '(a b c) '(1 2 3))
+;=> (c c c b b a)
+;(revCount '(d c b a) '(3 0 0 1))
+;=> (a d d d)
+
+
