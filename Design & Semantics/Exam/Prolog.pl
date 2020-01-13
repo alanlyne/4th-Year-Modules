@@ -82,3 +82,44 @@ noah([H1|T1],[H2|T2],[H1,H2|T3]) :- noah(T1,T2,T3).
 
 %noah([ ],[ ],[ ]).
 %noah([a,b,c,d],[abb,bee,cee,dee],[a,abb,b,bee,c,cee,d,dee]).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Prolog
+%Define a Prolog predicate path(X,Y,G), where path(-,-,+), which
+%is true when there is a path from node X to node Y in a directed
+%graph G, where the graph is represented by a list of edges, each
+%represented by a two-element list of the source and destination nodes.
+
+path(X,Y,Z):-
+    walk(X, Y, Z, Z).
+
+walk(X, Y, [[X,Y|_]|_], _).
+    
+walk(X, Y, [[X,C|_]|_], Z):-
+    walk(C, Y, Z, Z).
+
+walk(X, Y, [_|G], Z):-
+    walk(X, Y, G, Z).
+    
+% path(b, Y ,[[a,x],[b,a],[b,d],[d,e]]).
+% Y = a
+% Y = x
+% Y = d
+% Y = e
+
+% CAREFUL OF LOOOPS ie. path(b, Y ,[[a,x],[x,b],[b,a]]).  -->  Y = x, b, a, x, b, .......
+%no loop answer 
+
+paths(X, Y, [[X,Y|_]|_]).
+    
+paths(X, Y, [[X,C|_]|G]):-
+    paths(C, Y, G).
+
+paths(X, Y, [_|G]):-
+    paths(X, Y, G).
+    
+% paths(b, Y ,[[a,x],[b,a],[b,d],[d,e]]).
+% Y = a
+% Y = d
+% Y = e
