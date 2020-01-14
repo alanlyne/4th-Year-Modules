@@ -85,7 +85,7 @@ noah([H1|T1],[H2|T2],[H1,H2|T3]) :- noah(T1,T2,T3).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Prolog
+%Prolog 2017 Jan
 %Define a Prolog predicate path(X,Y,G), where path(-,-,+), which
 %is true when there is a path from node X to node Y in a directed
 %graph G, where the graph is represented by a list of edges, each
@@ -123,3 +123,30 @@ paths(X, Y, [_|G]):-
 % Y = a
 % Y = d
 % Y = e
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Prolog 2017 Aut
+%Define a Prolog predicate thrice/2 which is true when its first argument appears three
+%times in its second argument, which must be a list.
+
+thrice(X, [X,X,X|_]).
+
+thrice(X, [X|T]):-
+    length(T, L),
+    L > 2,
+    append(T, [X], End),
+    thrice(X, End).
+
+thrice(X, [_|T]):-
+    length(T, L),
+    L > 2,
+    thrice(X, T).
+    
+%?- thrice(e,[t,h,e,b,e,a,t,b,e]).
+%true
+%?- thrice(e,[t,h,e,b,e,a,t,b]).
+%false
+
+
+
