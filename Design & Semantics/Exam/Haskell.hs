@@ -63,12 +63,11 @@ mapSkip func lst
 --two lists and weaves them together in hunks of the given size.
 --Be sure to declare its type signature.
 
-weaveHunks :: Int -> [a] -> [a] -> [a]
-weaveHunks x lst1 lst2
-    | (length lst1) == 0 && (length lst2) == 0 = []
-    | (length lst1) == 0 = lst2
-    | (length lst2) == 0 = lst1
-    | otherwise = take x lst1 ++ take x lst2 ++ weaveHunks x (drop x lst1) (drop x lst2)
+weaveHunks :: Int -> [b] -> [b] -> [b]
+weaveHunks num list1 list2
+        |null list1 = list2
+        |null list2 = list1
+        |otherwise = take num list1 ++ take num list2 ++ weaveHunks num (drop num list1) (drop num list2)
 
 -- weaveHunks 3 "abcdefghijklmno" "ABCDEFGHIJKLMNO"
 -- => "abcABCdefDEFghiGHIjklJKLmnoMNO"

@@ -52,7 +52,6 @@ mapSkip func list
 
 weaveHunks :: Int -> [b] -> [b] -> [b]
 weaveHunks num list1 list2
-        |null list1 && null list2 = []
         |null list1 = list2
         |null list2 = list1
         |otherwise = take num list1 ++ take num list2 ++ weaveHunks num (drop num list1) (drop num list2)
