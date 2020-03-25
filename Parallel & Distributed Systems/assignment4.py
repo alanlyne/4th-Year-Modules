@@ -16,7 +16,7 @@ def isValid(url):
 def getLinks(url):
     urls = set()
     domainName = urlparse(url).netloc
-    soup = BeautifulSoup(requests.get(url).content, "html.parse")
+    soup = BeautifulSoup(requests.get(url).content, "html.parser")
 
     # Gets all 'a' anchor tags in the HTML
     for aTag in soup.findAll("a"):
@@ -48,6 +48,6 @@ def getLinks(url):
     return urls
 
 if __name__ == "__main__":
-    getLinks("http://www.cs.nuim.ie")
-    print("[+] Total: ", urls)
+    urls = getLinks("http://www.cs.nuim.ie")
+    print("[+] Total:", len(urls))
 
