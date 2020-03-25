@@ -47,7 +47,7 @@ def getLinks(url):
     # Return the set
     return urls
 
-    if _name_ == "_main_":
-        getLinks("http://www.cs.nuim.ie")
-        print("[+] Total: ", urls)
+if __name__ == "__main__":
+    getLinks("http://www.cs.nuim.ie")
+    print("[+] Total: ", urls)
 
