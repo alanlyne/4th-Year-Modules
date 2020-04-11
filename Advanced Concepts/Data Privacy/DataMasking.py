@@ -35,14 +35,16 @@ def noise(df):
 
 # Calculate the Disclosure Risk (Euclidean Distance) between the original and masked dataset
 def euclidean(df, signal):
+    euclideanDist = np.linalg.norm(df-signal)
+    print("Euclidean distance between two said series: ", euclideanDist)
     return pd.Series(np.linalg.norm(df.to_numpy()-signal.to_numpy(), axis=0), index=df.columns)
 
 
 # Calculate the information lossed between the masked and prginal set using mean square error
 def infoLoss(df, signal):
-    #return np.sqrt(mean_squared_error(df, signal))
-    #return mean_squared_error(df, signal)
-    return np.square(np.subtract(df, signal)).mean() 
+    informationLoss = (mean_squared_error(df, signal))
+    print("The calculated information loss is: ", informationLoss)
+    return pd.Series(np.square(np.subtract(df, signal)).mean())
 
 
 if __name__ == "__main__":
@@ -59,13 +61,14 @@ if __name__ == "__main__":
     print(signal)
 
     euclideanDist = euclidean(df, signal)
-    print("Euclidean distance between two said series: ", euclideanDist)
+    #print("Euclidean distance between two said series: ", euclideanDist)
 
     informationLoss = infoLoss(df, signal)
-    print("The calculated information loss is: ", informationLoss)
+    #print("The calculated information loss is: ", informationLoss)
+ 
 
-    # Need to graph the difference between the Euclidean distance (Risk) and Mean Square Error (Information Loss)
-    #plt.scatter(euclideanDist,  informationLoss)
+    informationLoss.plot(style = '.')
+    euclideanDist.plot(style = '.')
 
     plt.title("Microaggregation individual ranking dRisk(k)")
     plt.xlabel("dRisk")
