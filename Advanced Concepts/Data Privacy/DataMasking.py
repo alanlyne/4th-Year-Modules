@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
+# Normalise/Standardise the dataset
 def stand(df):
     names = df.columns
 
@@ -18,11 +18,10 @@ def stand(df):
     scaled_df = scaler.fit_transform(df)
     scaled_df = pd.DataFrame(scaled_df, columns=names)
 
-    # print(scaled_df)
-
     return scaled_df
 
 
+# Using Guassian Noise for making data
 def noise(df):
     mu = 0
     sigma = 0.1
@@ -34,14 +33,16 @@ def noise(df):
     return signal
 
 
-# Calculate the Eucliane Distance between the original and masked dataset
+# Calculate the Disclosure Risk (Euclidean Distance) between the original and masked dataset
 def euclidean(df, signal):
-    return (np.linalg.norm(df-signal))
+    return pd.Series(np.linalg.norm(df.to_numpy()-signal.to_numpy(), axis=0), index=df.columns)
 
 
 # Calculate the information lossed between the masked and prginal set using mean square error
 def infoLoss(df, signal):
-    return np.sqrt(mean_squared_error(df, signal))
+    #return np.sqrt(mean_squared_error(df, signal))
+    #return mean_squared_error(df, signal)
+    return np.square(np.subtract(df, signal)).mean() 
 
 
 if __name__ == "__main__":
@@ -63,10 +64,10 @@ if __name__ == "__main__":
     informationLoss = infoLoss(df, signal)
     print("The calculated information loss is: ", informationLoss)
 
-    # fig=plt.figure()
-    # ax=fig.add_axes([0,0,1,1])
-    # ax.scatter(10,euclideanDist, color = 'r')
-    # ax.scatter(10,informationLoss, color = 'b')
-    # plt.show()
+    # Need to graph the difference between the Euclidean distance (Risk) and Mean Square Error (Information Loss)
+    #plt.scatter(euclideanDist,  informationLoss)
 
-
+    plt.title("Microaggregation individual ranking dRisk(k)")
+    plt.xlabel("dRisk")
+    plt.ylabel("dUtility")
+    plt.show()
