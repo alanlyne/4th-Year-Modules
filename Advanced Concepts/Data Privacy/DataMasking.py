@@ -95,7 +95,7 @@ if __name__ == "__main__":
     #informationLoss.plot(style = '.')
     #euclideanDist.plot(style = '.')
 
-    plt.scatter(informationLoss, euclideanDist)
+    plt.plot(informationLoss, euclideanDist, 'o', color='black')
     #plt.scatter(euclideanDist)
 
     plt.title("Microaggregation individual ranking dRisk(k)")
