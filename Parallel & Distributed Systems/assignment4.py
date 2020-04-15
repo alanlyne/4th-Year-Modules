@@ -24,7 +24,7 @@ def writeHTML(data, url):
     #dir_url = url.replace(":", "")
     #print(dir_url)
     url = url.rsplit('/', 1)[-1]
-    file = open("Parallel & Distributed Systems//" + url + ".html", 'w', encoding='utf-8')
+    file = open("Parallel & Distributed Systems//" + "htmlFiles//" + url + ".html", 'w', encoding='utf-8')
     file.write(data)
     
 
