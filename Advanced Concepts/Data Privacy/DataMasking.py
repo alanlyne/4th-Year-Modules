@@ -25,15 +25,12 @@ def stand(original):
 
 # Using Guassian Noise for making data
 def noise(original, sigma):
-    #original = original.to_numpy()
     mu = 0
-    #noise = np.random.normal(mu, sigma, original.shape)
-    noise = random.gauss(mu, sigma)
+    noise = np.random.normal(mu, sigma, original.shape)
+    #noise = random.gauss(mu, sigma)
 
-    noise = noise * sqrt(??????)
+    #noise = noise * sqrt(??????)
     noise = original + noise
-
-    #noise = original + noise
 
     return noise
 
