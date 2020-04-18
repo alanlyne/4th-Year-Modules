@@ -12,10 +12,8 @@ import random
 # Normalise/Standardise the dataset
 def stand(original):
     names = original.columns
-
     # Create the Scaler object
     scaler = preprocessing.StandardScaler()
-
     # Fit data on the scaler object
     scaled_original = scaler.fit_transform(original)
     scaled_original = pd.DataFrame(scaled_original, columns=names)
@@ -27,9 +25,6 @@ def stand(original):
 def noise(original, sigma):
     mu = 0
     noise = np.random.normal(mu, sigma, original.shape)
-    #noise = random.gauss(mu, sigma)
-
-    #noise = noise * sqrt(??????)
     noise = original + noise
 
     return noise
@@ -81,17 +76,18 @@ if __name__ == "__main__":
     dbrlD=[]
     a = 0
     for i in np.arange(0.1, 2.1, 0.1):
-
+        # Create our new dataset
         noiseData.append(noise(normData, i))
-        
+        # Calculate the Disclosure Based Record Linkage 
         dbrlD.append(dbrl(normData, noiseData[a]))
-
+        # Calculate the Inforamtion Loss
         infoLossD.append(infoLoss(normData, noiseData[a]))
 
+        # Print out our results
         print("Noise: ", round(i, 1), " - Disclosure Risk:", dbrlD[a],"% - Information Loss:",infoLossD[a],"%")
 
+        # Plot our data points
         plt.scatter([infoLossD[a]],[dbrlD[a]])
-
         a = a + 1
 
     plt.title("Gaussian Noise individual ranking dRisk(k)")
