@@ -1,5 +1,3 @@
-let counter = 60;
-
 const codeDictionary = {};
 const http = new XMLHttpRequest();
 const proxyURL = "https://cors-anywhere.herokuapp.com/";

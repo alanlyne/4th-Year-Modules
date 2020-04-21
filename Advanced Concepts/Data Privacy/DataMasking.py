@@ -66,7 +66,7 @@ def infoLoss(original, masked):
 
 if __name__ == "__main__":
     # Get dataset
-    original = pd.read_csv(r"Advanced Concepts\\Data Privacy\\CASCrefmicrodata.csv")
+    original = pd.read_csv(r"Advanced Concepts\Data Privacy\CASCrefmicrodata.csv")
 
     # Normalise/Standardise the data
     normData = stand(original)
