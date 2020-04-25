@@ -61,7 +61,7 @@ def dbrl(original, masked):
 def infoLoss(original, masked):
     original = original.to_numpy()
     masked = masked.to_numpy()
-    return np.square(np.subtract(original, masked)).mean()
+    return 100-(np.square(np.subtract(original, masked)).mean())
 
 
 if __name__ == "__main__":
