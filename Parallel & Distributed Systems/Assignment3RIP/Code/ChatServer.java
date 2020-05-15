@@ -2,14 +2,14 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class ChatServer  {
+public class ChatServer {
     private int port;
     // Keep track of user names
     private Set<String> userNames = new HashSet<>();
     // Keep track of user threads
     private Set<UserThread> userThreads = new HashSet<>();
 
-    public ChatServer(int port){
+    public ChatServer(int port) {
         this.port = port;
     }
 

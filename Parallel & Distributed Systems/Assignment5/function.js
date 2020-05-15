@@ -1,3 +1,6 @@
+// Alan Lyne
+// 15468498
+
 const codeDictionary = {};
 const http = new XMLHttpRequest();
 const proxyURL = "https://cors-anywhere.herokuapp.com/";
@@ -7,9 +10,13 @@ const stationInformationURL =
   "http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByCodeXML_WithNumMins?NumMins=90&format=xml&StationCode=";
 
 // Table Function
-function getStationInformation() {
+function getStationInfo() {
+  if (document.getElementById("displaytable").style.visibility === "collapse") {
+    document.getElementById("displaytable").style.visibility = "visible";
+  }
+
   // Takes user input
-  let input = document.getElementById("stationCodeInput").value.toLowerCase();
+  let input = document.getElementById("stationName").value.toLowerCase();
   let code;
 
   if (codeDictionary[input] !== undefined) {
@@ -40,6 +47,12 @@ function updateTable(responseXML) {
     let row = document.createElement("tr");
     row.className = "item";
 
+    let arrivalTime = document.createElement("td");
+    arrivalTime.innerText = station.getElementsByTagName(
+      "Exparrival"
+    )[0].innerHTML;
+    row.appendChild(arrivalTime);
+
     let origin = document.createElement("td");
     origin.innerText = station.getElementsByTagName("Origin")[0].innerHTML;
     row.appendChild(origin);
@@ -50,22 +63,17 @@ function updateTable(responseXML) {
     )[0].innerHTML;
     row.appendChild(destination);
 
-    let dueTime = document.createElement("td");
-    dueTime.innerText =
-      station.getElementsByTagName("Duein")[0].innerHTML + " min";
-    row.appendChild(dueTime);
-
-    let arrivalTime = document.createElement("td");
-    arrivalTime.innerText = station.getElementsByTagName(
-      "Scharrival"
-    )[0].innerHTML;
-    row.appendChild(arrivalTime);
-
     let departureTime = document.createElement("td");
     departureTime.innerText = station.getElementsByTagName(
       "Expdepart"
     )[0].innerHTML;
     row.appendChild(departureTime);
+
+    let dueTime = document.createElement("td");
+    dueTime.innerText = station.getElementsByTagName(
+      "Destinationtime"
+    )[0].innerHTML;
+    row.appendChild(dueTime);
 
     tableBody.appendChild(row);
   }
@@ -83,6 +91,7 @@ function getStationNames() {
   http.send();
 }
 
+// Get station name from code
 function buildCodeDictionary(responseXML) {
   let stations = responseXML.getElementsByTagName("ArrayOfObjStation")[0]
     .children;
